@@ -1,6 +1,6 @@
 # Projeto final de Engenharia de Software
 
-O projeto usa o ESM Forum, um fórum de perguntas e respostas com backend em Node.js, Express e SQLite e frontend em React. Esta pasta reúne os documentos e diagramas da entrega. O código fica nos repositórios abaixo.
+Este repositório reúne os documentos e diagramas do projeto final de Engenharia de Software I. O trabalho foi feito sobre o ESM Forum, um fórum de perguntas e respostas. O backend e o frontend estão nos repositórios abaixo.
 
 ## Repositórios e planejamento
 
@@ -58,10 +58,11 @@ Mostra os estados do voto e o que acontece ao registrar, trocar, repetir ou reti
 
 ## Parte 3 — SOLID, padrões de projeto e arquitetura
 
-A [análise SOLID](parte3/ANALISE_SOLID.md) apresenta três pontos positivos e duas oportunidades de melhoria no backend. A [implementação da votação](parte3/IMPLEMENTACAO_SOLID.md) inclui o código nos repositórios do backend e do frontend, exemplos de SOLID e os testes realizados. A [análise dos padrões existentes](parte3/PADROES_EXISTENTES.md) descreve Strategy, DAO e as funções de fábrica. As [propostas de padrões](parte3/PADROES_PROPOSTOS.md) trazem três diagramas, exemplos de código e a aplicação prevista no fórum. Os documentos de arquitetura ainda estão pendentes. A [lista de entregáveis da Parte 3](parte3/README.md) indica o que falta.
+Esta parte analisa o código do backend e apresenta a implementação da votação com princípios SOLID. Também identifica padrões usados no sistema e propõe outros três para as funcionalidades planejadas.
 
-## Organização das cópias
+- [ANALISE_SOLID.md](parte3/ANALISE_SOLID.md): pontos positivos e possibilidades de melhoria no código.
+- [IMPLEMENTACAO_SOLID.md](parte3/IMPLEMENTACAO_SOLID.md): votação, divisão dos módulos e aplicação de SRP, DIP e OCP.
+- [PADROES_EXISTENTES.md](parte3/PADROES_EXISTENTES.md): padrões presentes no código.
+- [PADROES_PROPOSTOS.md](parte3/PADROES_PROPOSTOS.md): propostas de Decorator, Observer e Facade, com exemplos e diagramas.
 
-Os documentos das partes 1 e 2 e os diagramas foram copiados da versão e0abadb do repositório do backend. Os arquivos originais continuam no repositório esmforum. As revisões locais dos documentos da Parte 1 que não foram commitadas ficaram fora desta cópia. A pasta parte3 reúne os novos documentos conforme forem preparados.
-
-Para executar o sistema, use os repositórios indicados no início e siga o guia de instalação da Parte 1.
+A análise e a proposta de arquitetura ainda estão pendentes. O [índice da Parte 3](parte3/README.md) mostra os itens previstos para essa etapa.
