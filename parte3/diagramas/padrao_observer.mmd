@@ -1,8 +1,21 @@
 classDiagram
     class ServicoRespostas {
-        -repositorioRespostas
-        -eventos
+        -respostas
+        -eventosPendentes
         +cadastrar(pergunta, autor, texto) Resposta
+    }
+    class RepositorioRespostas {
+        +cadastrar(pergunta, autor, texto) Resposta
+    }
+    class RepositorioEventosPendentes {
+        +gravar(evento)
+        +listar() Evento[]
+        +marcarProcessado(id)
+    }
+    class ProcessadorEventos {
+        -eventosPendentes
+        -publicador
+        +processar()
     }
     class PublicadorEventos {
         -observadores
@@ -22,13 +35,12 @@ classDiagram
         +buscarAutor(pergunta) Usuario
     }
     class RepositorioNotificacoes {
-        +criar(destino, pergunta, resposta)
-    }
-    class RepositorioRespostas {
-        +cadastrar(pergunta, autor, texto) Resposta
+        +criarSeAusente(evento, destino)
     }
     ServicoRespostas --> RepositorioRespostas : salva
-    ServicoRespostas --> PublicadorEventos : publica
+    ServicoRespostas --> RepositorioEventosPendentes : grava evento
+    ProcessadorEventos --> RepositorioEventosPendentes : le e confirma
+    ProcessadorEventos --> PublicadorEventos : publica
     PublicadorEventos o-- ObservadorResposta : avisa
     ObservadorResposta <|.. NotificadorAutor
     NotificadorAutor --> RepositorioPerguntas : consulta

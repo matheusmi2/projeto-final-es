@@ -29,39 +29,45 @@ Essa proposta combina bem com o uso dos dois recursos na mesma página. Para uma
 
 ## 2. Observer para novas respostas
 
-Quando alguém responde a uma pergunta, o autor precisa ser avisado. Colocar toda a lógica de notificações dentro do cadastro de respostas misturaria dois trabalhos. Com Observer, o cadastro publica um evento depois de salvar a resposta, e o notificador recebe esse evento.
+Quando alguém responde a uma pergunta, o autor precisa ser avisado. O cadastro da resposta não precisa conhecer a regra de notificação. Com Observer, um publicador avisa os observadores inscritos sempre que há uma nova resposta.
 
-ServicoRespostas salvaria a resposta pelo RepositorioRespostas e publicaria um evento pelo PublicadorEventos. O evento teria o identificador da pergunta, o da resposta e o do usuário que respondeu. NotificadorAutor seria inscrito no publicador. Ao receber o evento, ele consultaria o autor da pergunta e criaria a notificação pelo RepositorioNotificacoes. Se o próprio autor tiver respondido, não criaria uma notificação para ele mesmo.
+ServicoRespostas salvaria a resposta pelo RepositorioRespostas. Na mesma transação, guardaria um evento no RepositorioEventosPendentes. Esse evento teria o identificador da pergunta, o da resposta e o do usuário que respondeu. A transação garante que uma resposta salva também deixe registrado o aviso que falta entregar.
 
-Os módulos novos seriam o publicador de eventos, o observador de respostas e o repositório de notificações. O cadastro de respostas atual não guarda o autor. Para esta proposta funcionar, a tabela de respostas teria de registrar id_usuario, e as respostas antigas precisariam de uma regra de migração.
+ProcessadorEventos leria os eventos pendentes e os enviaria ao PublicadorEventos. NotificadorAutor seria um dos observadores inscritos. Ele buscaria o autor da pergunta e criaria a notificação pelo RepositorioNotificacoes. Se o autor da pergunta tiver escrito a resposta, não haveria notificação para ele. Depois de avisar os observadores, o processador marcaria o evento como concluído.
 
-O fluxo principal pode ser escrito assim:
+Os módulos novos seriam ServicoRespostas, RepositorioEventosPendentes, ProcessadorEventos, PublicadorEventos, NotificadorAutor e RepositorioNotificacoes. O cadastro atual de respostas não guarda o autor. Para esta proposta funcionar, a tabela de respostas teria de registrar id_usuario, e as respostas antigas precisariam de uma regra de migração.
+
+O fluxo pode ser representado por este código simplificado:
 
 ```javascript
 function cadastrarResposta(pergunta, autorResposta, texto) {
-  const resposta = repositorioRespostas.cadastrar(pergunta, autorResposta, texto);
-  eventos.publicar({ pergunta, resposta: resposta.id_resposta, autorResposta });
-  return resposta;
+  return banco.transaction(() => {
+    const resposta = repositorioRespostas.cadastrar(pergunta, autorResposta, texto);
+    eventosPendentes.gravar({ pergunta, resposta: resposta.id_resposta, autorResposta });
+    return resposta;
+  })();
 }
 
-eventos.inscrever({
+function processarEvento(evento) {
+  publicador.publicar(evento);
+  eventosPendentes.marcarProcessado(evento.id);
+}
+
+publicador.inscrever({
   aoResponder(evento) {
     const autorPergunta = repositorioPerguntas.buscarAutor(evento.pergunta);
     if (autorPergunta !== evento.autorResposta) {
-      repositorioNotificacoes.criar(autorPergunta, evento.pergunta, evento.resposta);
+      repositorioNotificacoes.criarSeAusente(evento.id, autorPergunta, evento.pergunta, evento.resposta);
     }
   }
 });
 ```
 
-O exemplo mostra a relação entre os módulos, não o tratamento completo de falhas. A resposta não deve sumir se a gravação da notificação falhar. Na implementação, seria preciso guardar os eventos pendentes no banco junto com a resposta e processá-los novamente em caso de erro. Isso também evita perder um aviso se o servidor parar entre as duas gravações.
-
-O PublicadorEventos teria inicialmente um observador. Outros avisos relacionados a respostas poderiam ser acrescentados por inscrição, sem colocar mais regras no serviço de cadastro.
+Se a gravação da notificação falhar, o evento continua pendente para outra tentativa. criarSeAusente impediria que essa tentativa gerasse duas notificações iguais. Assim, a resposta permanece salva e o aviso pode ser concluído depois. Outros avisos ligados a novas respostas poderiam ser acrescentados pela inscrição de outro observador.
 
 ![Diagrama de classes do Observer](diagramas/padrao_observer.png)
 
 [Arquivo Mermaid do Observer](diagramas/padrao_observer.mmd)
-
 ## 3. Facade para o perfil do usuário
 
 O perfil precisa juntar nome, perguntas e respostas de uma pessoa. Sem um ponto de entrada para essa operação, a rota teria de chamar vários módulos de dados e montar o resultado. Facade reúne essas chamadas em uma operação de perfil.
