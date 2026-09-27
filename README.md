@@ -64,5 +64,7 @@ Esta parte analisa o código do backend e apresenta a implementação da votaç�
 - [IMPLEMENTACAO_SOLID.md](parte3/IMPLEMENTACAO_SOLID.md): votação, divisão dos módulos e aplicação de SRP, DIP e OCP.
 - [PADROES_EXISTENTES.md](parte3/PADROES_EXISTENTES.md): padrões presentes no código.
 - [PADROES_PROPOSTOS.md](parte3/PADROES_PROPOSTOS.md): propostas de Decorator, Observer e Facade, com exemplos e diagramas.
+- [ARQUITETURA.md](parte3/ARQUITETURA.md): arquitetura atual do sistema, camadas, comunicação e diagrama.
+- [PROPOSTA_ARQUITETURA.md](parte3/PROPOSTA_ARQUITETURA.md): organização em camadas e proposta de MVC para perguntas e votação.
 
-A análise e a proposta de arquitetura ainda estão pendentes. O [índice da Parte 3](parte3/README.md) mostra os itens previstos para essa etapa.
+O [índice da Parte 3](parte3/README.md) reúne os documentos e diagramas dessa etapa.

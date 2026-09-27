@@ -1,6 +1,6 @@
 # Parte 3 — SOLID, padrões de projeto e arquitetura
 
-A análise SOLID, a votação e os documentos de padrões de projeto estão disponíveis abaixo. Os documentos de arquitetura ainda estão pendentes.
+Esta parte reúne a análise SOLID, a implementação da votação, os padrões de projeto e os documentos de arquitetura.
 
 ## Iteração 1 — SOLID
 
@@ -16,9 +16,9 @@ A análise SOLID, a votação e os documentos de padrões de projeto estão disp
 
 ## Iteração 3 — Arquitetura
 
-- [ ] ARQUITETURA.md com a análise da arquitetura atual, das camadas e da comunicação entre frontend e backend.
-- [ ] Diagrama da arquitetura atual, com imagem e arquivo fonte ou link.
-- [ ] PROPOSTA_ARQUITETURA.md com a organização em camadas e a aplicação de MVC em pelo menos duas funcionalidades.
-- [ ] Diagrama da estrutura MVC proposta, com imagem e arquivo fonte ou link.
+- [x] [ARQUITETURA.md](ARQUITETURA.md) com a análise da arquitetura atual, das camadas e da comunicação entre frontend e backend.
+- [x] [Diagrama da arquitetura atual](diagramas/arquitetura_atual.png), com [arquivo fonte Mermaid](diagramas/arquitetura_atual.mmd).
+- [x] [PROPOSTA_ARQUITETURA.md](PROPOSTA_ARQUITETURA.md) com a organização em camadas e a aplicação de MVC em perguntas e votação.
+- [x] [Diagrama da estrutura MVC proposta](diagramas/mvc_proposto.png), com [arquivo fonte Mermaid](diagramas/mvc_proposto.mmd).
 
 [Voltar ao índice da entrega](../README.md)
